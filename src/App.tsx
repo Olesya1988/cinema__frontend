@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { MovieList } from "./pages/MovieList";
+import { MovieList } from "./components/MovieList";
 import { LoginPage } from "./pages/LoginPage";
 import { AdminPage } from "./pages/AdminPage";
 import Menu from "./components/Menu";
 import getDate from "./helper";
 import "./App.css";
+import { TicketPage } from "./pages/TicketPage";
+import { HallPage } from "./pages/HallPage";
 
 export interface IMovie {
   id: number;
@@ -20,7 +22,7 @@ export interface IMovie {
 
 export default function App() {
   const [movies, setMovies] = useState<IMovie[]>([]);
-
+  
   const url = "http://localhost:7070/movies";
 
   const getAllMovies = async () => {   
@@ -52,6 +54,8 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/hall" element={<HallPage />} />
+        <Route path="/ticket" element={<TicketPage />} />
         <Route path="/" element={<><Menu /><MovieList movies={firstPageList} /></>} />
         <Route path="/tomorrow" element={<><Menu /><MovieList movies={secondPageList} /></>} />
         <Route path="/3" element={<><Menu /><MovieList movies={thirdPageList} /></>} />

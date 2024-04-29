@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AdminPage } from "../AdminPage";
 
@@ -10,6 +10,8 @@ export const LoginPage = () => {
   });
 
   const [answer, setAnswer] = useState(3);
+
+  const navigate = useNavigate();
 
   const url = "http://localhost:7070/logins";  
 
@@ -44,8 +46,7 @@ export const LoginPage = () => {
 
   return (
     <>
-    {answer === 1 ? (<AdminPage/> ) : (
-    
+    {answer === 1 ? (navigate('/admin')) : (    
       <div className="login-contaiter">
       <nav className="admin">
         <NavLink to="/"><button className="admin-enter">Выход</button></NavLink>

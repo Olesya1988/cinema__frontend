@@ -142,12 +142,15 @@ export const AdminPage = () => {
   useEffect(loadData, []);
 
   const createHall = async () => {
+    
     await fetch(url, {
       method: "POST",
+     
     });
+    
     getHalls();
   };
-
+ 
   const deleteHall = async (id: number) => {
     await fetch(`${url}/${id}`, {
       method: "DELETE",
