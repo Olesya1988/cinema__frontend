@@ -132,6 +132,7 @@ export const AdminPage = () => {
       method: "GET",
     });
     const result = await response.json();
+    console.log(result);
     setHalls(result);
   };
 
