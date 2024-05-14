@@ -11,60 +11,66 @@ interface IHall {
 
 interface IHallConfiguration {
   halls: IHall[];
+  onClickHandler: any;
+  activeHall: any;
+  onUpdatePlacesHandler: any;
+  places: any;
+  onChange: any;
+  onSubmitPlacesHandler: any
 }
 
-export const HallConfiguration = ({ halls }: IHallConfiguration) => {
-  const [activeHall, setActiveHall] = useState(0);
-  const [currentPlaces, setCurrentPlaces] = useState([]);
+export const HallConfiguration = ({ halls, onClickHandler, activeHall, onUpdatePlacesHandler, places, onChange, onSubmitPlacesHandler}: IHallConfiguration) => {
+  // const [activeHall, setActiveHall] = useState(0);
+  // const [currentPlaces, setCurrentPlaces] = useState([]);
 
-  let places = halls[activeHall].places;
+  // let places = halls[activeHall].places;
 
-  const [formEdit, setFormEdit] = useState({
-    rows: 0,
-    seats: 0,
-  });
+  // const [formEdit, setFormEdit] = useState({
+  //   rows: 0,
+  //   seats: 0,
+  // });
 
-  const url = "http://localhost:7070/places";
+  // const url = "http://localhost:7070/places";
 
-  const updatePlaces = async (id: number, rows: number, seats: number) => {
-    const places = {
-      id,
-      rows,
-      seats,
-    };
-    await fetch(`${url}/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(places),
-    });
-  };
-  const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {   
-    const { name, value } = e.target;
-    setFormEdit((prev) => ({ ...prev, [name]: value }));
-  };
+  // const updatePlaces = async (id: number, rows: number, seats: number) => {
+  //   const places = {
+  //     id,
+  //     rows,
+  //     seats,
+  //   };
+  //   await fetch(`${url}/${id}`, {
+  //     method: "PUT",
+  //     body: JSON.stringify(places),
+  //   });
+  // };
+  // const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {   
+  //   const { name, value } = e.target;
+  //   setFormEdit((prev) => ({ ...prev, [name]: value }));
+  // };
 
-  const onSubmitPlacesHandler = (e: any) => {   
-    e.preventDefault();
-    updatePlaces(activeHall, formEdit.rows, formEdit.seats);
-    setFormEdit({ rows: 0, seats: 0, });
-  };
+  // const onSubmitPlacesHandler = (e: any) => {   
+  //   e.preventDefault();
+  //   updatePlaces(activeHall, formEdit.rows, formEdit.seats);
+  //   setFormEdit({ rows: 0, seats: 0, });
+  // };
 
-  const onClickHandler = (e: any) => {
-    e.preventDefault();
-    const target = e.target;
+  // const onClickHandler = (e: any) => {
+  //   e.preventDefault();
+  //   const target = e.target;
 
-    getActiveHall(target.closest("li").id);
-  };
+  //   getActiveHall(target.closest("li").id);
+  // };
 
-  const getActiveHall = (id: number) => {
-    setActiveHall(id - 1);
-  };
+  // const getActiveHall = (id: number) => {
+  //   setActiveHall(id - 1);
+  // };
 
-  const onChange = (e: any)  => {
-    e.preventDefault();
-    const target = e.target;
-    target.classList.remove(target.classList.item(1));
-    target.classList.add(target.value);
-  }
+  // const onChange = (e: any)  => {
+  //   e.preventDefault();
+  //   const target = e.target;
+  //   target.classList.remove(target.classList.item(1));
+  //   target.classList.add(target.value);
+  // }
 
   return (
     <section className="conf-step">
@@ -114,13 +120,13 @@ export const HallConfiguration = ({ halls }: IHallConfiguration) => {
 
         <div className="conf-step__hall">
           <div className="conf-step__hall-wrapper">
-            {places.map((place) => (
+            {places.map((place: any) => (
               <div className="conf-step__row">
                 {place.map((item: string, index: number) => (
                   <select className={cn("conf-step__chair", place[index])} onChange={onChange}>
-                    <option value="standart">standart</option>
-                    <option value="vip">vip</option>
-                    <option value="disabled">disabled</option>
+                    <option className="conf-step__chair__option" value="standart">standart</option>
+                    <option className="conf-step__chair__option" value="vip">vip</option>
+                    <option className="conf-step__chair__option" value="disabled">disabled</option>
                   </select>
                 ))}
               </div>

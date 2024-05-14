@@ -53,7 +53,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminPage movies={movies}/>} />
         <Route path="/hall" element={<HallPage />} />
         <Route path="/ticket" element={<TicketPage />} />
         <Route path="/" element={<><Menu /><MovieList movies={firstPageList} /></>} />

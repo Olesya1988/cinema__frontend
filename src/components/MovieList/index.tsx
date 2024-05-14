@@ -6,6 +6,7 @@ interface IMovies {
 }
 
 export const MovieList = ({ movies }: IMovies) => {
+  
   return (
     <>
       {movies.map((movie: IMovie) => (

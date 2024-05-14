@@ -73,6 +73,10 @@ select {
   padding: 35px 42px 35px 104px;
 }
 
+.conf-step__chair__option {
+  font-size: 20px;
+}
+
 .page-header {
   color: #FFFFFF;
   text-transform: uppercase;
@@ -822,4 +826,42 @@ textarea.conf-step__input {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.movie-add__form__wrapper {
+  position: fixed;
+
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.invisible {
+  display: none;
+}
+
+.movie-add__form {
+  background-color: #ffff;
+
+  width: 390px; 
+
+  padding: 54px 30px; 
+  
+  position: absolute;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
 }
