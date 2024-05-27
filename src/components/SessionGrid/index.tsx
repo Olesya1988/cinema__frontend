@@ -1,20 +1,36 @@
 import cn from "classnames";
-import { useState } from "react";
 
-interface ISessionGrid {  
+interface ISessionGrid {
   onAddMovieHandler: any;
   onSubmitMovieHandler: any;
-  movies: any;  
+  onClickHandler: any;
+  activeMovies: any;
+  halls: IHall[];
+  activeHall: number;
+  onDeleteMovieHandler: any;
 }
 
-export const SessionGrid = ({ onAddMovieHandler, onSubmitMovieHandler, movies}: ISessionGrid) => {
-    
-  const onClickHandler = () => {
+interface IHall {
+  id: number;
+  rows: number;
+  seats: number;
+  places: Array<string[]>;
+  prices: {};
+}
+
+export const SessionGrid = ({
+  onAddMovieHandler,
+  onSubmitMovieHandler,
+  onClickHandler,
+  activeMovies,
+  halls,
+  activeHall,
+  onDeleteMovieHandler,
+}: ISessionGrid) => {
+  const onToggleHandler = () => {
     let form = document.querySelector(".movie-add__form__wrapper");
     form?.classList.toggle("invisible");
-  };  
-
- 
+  };
 
   return (
     <section className="conf-step">
@@ -25,50 +41,93 @@ export const SessionGrid = ({ onAddMovieHandler, onSubmitMovieHandler, movies}: 
         <p className="conf-step__paragraph">
           <button
             className="conf-step__button conf-step__button-accent"
-            onClick={onClickHandler}
+            onClick={onToggleHandler}
           >
             Добавить фильм
           </button>
         </p>
         <div className={cn("invisible", "movie-add__form__wrapper")}>
-            
           <form className="movie-add__form" onSubmit={onSubmitMovieHandler}>
-          <div className="close" onClick={onClickHandler}>X</div>
+            <div className="close" onClick={onToggleHandler}>
+              X
+            </div>
             <div className="movie-add__input">
-              <span>Введите название фильма</span>
+              <div>Введите название фильма</div>
               <input type="text" name="title" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <span>Введите описание фильма</span>
+              <div>Введите описание фильма</div>
               <input type="text" name="synopsis" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <span>Загрузите постер фильма</span>
-              <input type="text" name="img" onChange={onAddMovieHandler} />
-            </div>
-            <div className="movie-add__input">
-              <span>Введите продолжительность фильма</span>
+              <div>Введите продолжительность фильма</div>
               <input type="text" name="duration" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <span>Введите название страны, выпустившей фильм</span>
+              <div>Введите название страны, выпустившей фильм</div>
               <input type="text" name="origin" onChange={onAddMovieHandler} />
             </div>
-            <div className="movie-add__input" onChange={onAddMovieHandler} >
-              <span>Введите дату</span>
+            <div className="movie-add__input" onChange={onAddMovieHandler}>
+              <div>Введите дату</div>
               <input type="text" name="date" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <span>Введите номер зала</span>
+              <div>Введите номер зала</div>
               <input type="text" name="hall" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <span>Введите время начала сеанса</span>
+              <div>Введите время начала сеанса</div>
               <input type="text" name="time" onChange={onAddMovieHandler} />
             </div>
-            <button className="movie-add__submit" onClick={onClickHandler}>Сохранить</button>
+            <button className="movie-add__submit" onClick={onToggleHandler}>
+              Сохранить
+            </button>
           </form>
         </div>
+
+        <ul className="conf-step__selectors-box">
+          {halls.map((hall: any) => (
+            <li key={hall.id} id={hall.id} onClick={onClickHandler}>
+              <input
+                type="radio"
+                className="conf-step__radio"
+                name="prices-hall"
+              />
+              <span className="conf-step__selector">Зал {hall.id}</span>
+            </li>
+          ))}
+        </ul>
+
+        {activeMovies.map((movie: any) => (
+          <section className="movie">
+            <div className="movie__info" id={movie.id}>
+              <div className="movie__delete" onClick={onDeleteMovieHandler}>
+                X
+              </div>
+              <div className="movie__description">
+                <h2 className="movie__title">{movie.title}</h2>
+                <p className="movie__synopsis">{movie.synopsis}</p>
+                <p className="movie__data">
+                  <span className="movie__data-duration">{movie.duration}</span>
+                  /<span className="movie__data-origin">{movie.origin}</span>
+                </p>
+              </div>
+            </div>
+            {movie.seances.map((seance: any) => (
+              <div className="movie-seances__hall">
+                <ul className="movie-seances__list">
+                  {seance.time.map((time: any, index: number) => (
+                    <li className="movie-seances__time-block" key={index}>
+                      <a className="movie-seances__time" href="#">
+                        {time}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        ))}
 
         {/* <div className="conf-step__movies">
             <div className="conf-step__movie">

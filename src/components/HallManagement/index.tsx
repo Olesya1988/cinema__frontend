@@ -3,7 +3,7 @@ interface IHall {
   rows: number;
   seats: number;
   places: Array<string[]>;
-  prices: {},
+  prices: {};
 }
 
 interface IHallManagement {
@@ -12,7 +12,11 @@ interface IHallManagement {
   createHall: any;
 }
 
-export const HallManagement = ({halls, onDeleteHallHandler, createHall} : IHallManagement)  => {
+export const HallManagement = ({
+  halls,
+  onDeleteHallHandler,
+  createHall,
+}: IHallManagement) => {
   return (
     <section className="conf-step">
       <header className="conf-step__header conf-step__header_opened">

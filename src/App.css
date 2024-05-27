@@ -90,6 +90,7 @@ body {
   padding: 1.5rem;  
   background: rgba(241, 235, 230, 0.95);
   color: #000000;
+  position: relative;
 }
 .movie .movie__info {
   display: flex;
@@ -162,6 +163,12 @@ body {
   color: #000000;
   text-decoration: none;
   font-size: 1.5rem;
+}
+
+.movie__delete {
+position: absolute;
+top: 10px;
+right: 10px;
 }
 
 /* ~~~~~~~~~~~~ Кинозал ~~~~~~~~~~~~ */
@@ -255,16 +262,17 @@ body {
   border: 1px solid #525252;
   box-sizing: border-box;
   border-radius: 4px;
+  cursor: pointer;
 }
 .buying-scheme__chair:not(:first-of-type) {
   margin-left: 4px;
 }
 
-.buying-scheme__chair_disabled {
+.buying-scheme__chair_disabled, .buying-scheme__row .disabled {
   opacity: 0;
 }
 
-.buying-scheme__chair_standart {
+.buying-scheme__chair_standart, .buying-scheme__row .standart {
   background-color: #FFFFFF;
 }
 
@@ -272,12 +280,12 @@ body {
   background-color: transparent;
 }
 
-.buying-scheme__chair_vip {
+.buying-scheme__chair_vip, .buying-scheme__row .vip {
   background-color: #F9953A;
 }
 
 .buying-scheme__chair_selected {
-  background-color: #25C4CE;
+  background-color: #25C4CE!important;
   box-shadow: 0px 0px 4px #16A6AF;
   transform: scale(1.2);
 }
@@ -402,6 +410,8 @@ body {
   margin: 3rem auto 0;
   width: 20rem;
   height: 20rem;
+  background-image: url('/src/pages/TicketPage/images/qr-code.png');
+  background-size: cover;
 }
 
 

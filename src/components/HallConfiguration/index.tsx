@@ -16,62 +16,18 @@ interface IHallConfiguration {
   onUpdatePlacesHandler: any;
   places: any;
   onChange: any;
-  onSubmitPlacesHandler: any
+  onSubmitPlacesHandler: any;
 }
 
-export const HallConfiguration = ({ halls, onClickHandler, activeHall, onUpdatePlacesHandler, places, onChange, onSubmitPlacesHandler}: IHallConfiguration) => {
-  // const [activeHall, setActiveHall] = useState(0);
-  // const [currentPlaces, setCurrentPlaces] = useState([]);
-
-  // let places = halls[activeHall].places;
-
-  // const [formEdit, setFormEdit] = useState({
-  //   rows: 0,
-  //   seats: 0,
-  // });
-
-  // const url = "http://localhost:7070/places";
-
-  // const updatePlaces = async (id: number, rows: number, seats: number) => {
-  //   const places = {
-  //     id,
-  //     rows,
-  //     seats,
-  //   };
-  //   await fetch(`${url}/${id}`, {
-  //     method: "PUT",
-  //     body: JSON.stringify(places),
-  //   });
-  // };
-  // const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {   
-  //   const { name, value } = e.target;
-  //   setFormEdit((prev) => ({ ...prev, [name]: value }));
-  // };
-
-  // const onSubmitPlacesHandler = (e: any) => {   
-  //   e.preventDefault();
-  //   updatePlaces(activeHall, formEdit.rows, formEdit.seats);
-  //   setFormEdit({ rows: 0, seats: 0, });
-  // };
-
-  // const onClickHandler = (e: any) => {
-  //   e.preventDefault();
-  //   const target = e.target;
-
-  //   getActiveHall(target.closest("li").id);
-  // };
-
-  // const getActiveHall = (id: number) => {
-  //   setActiveHall(id - 1);
-  // };
-
-  // const onChange = (e: any)  => {
-  //   e.preventDefault();
-  //   const target = e.target;
-  //   target.classList.remove(target.classList.item(1));
-  //   target.classList.add(target.value);
-  // }
-
+export const HallConfiguration = ({
+  halls,
+  onClickHandler,
+  activeHall,
+  onUpdatePlacesHandler,
+  places,
+  onChange,
+  onSubmitPlacesHandler,
+}: IHallConfiguration) => {
   return (
     <section className="conf-step">
       <header className="conf-step__header conf-step__header_opened">
@@ -97,12 +53,24 @@ export const HallConfiguration = ({ halls, onClickHandler, activeHall, onUpdateP
         <div className="conf-step__legend">
           <label className="conf-step__label">
             Рядов, шт
-            <input type="text" name="rows" className="conf-step__input" placeholder={String(halls[activeHall].rows)} onChange={onUpdatePlacesHandler}/>
+            <input
+              type="text"
+              name="rows"
+              className="conf-step__input"
+              placeholder={String(halls[activeHall].rows)}
+              onChange={onUpdatePlacesHandler}
+            />
           </label>
           <span className="multiplier">x</span>
           <label className="conf-step__label">
             Мест, шт
-            <input type="text" name="seats" className="conf-step__input" placeholder={String(halls[activeHall].seats)} onChange={onUpdatePlacesHandler}/>
+            <input
+              type="text"
+              name="seats"
+              className="conf-step__input"
+              placeholder={String(halls[activeHall].seats)}
+              onChange={onUpdatePlacesHandler}
+            />
           </label>
         </div>
         <p className="conf-step__paragraph">
@@ -123,10 +91,25 @@ export const HallConfiguration = ({ halls, onClickHandler, activeHall, onUpdateP
             {places.map((place: any) => (
               <div className="conf-step__row">
                 {place.map((item: string, index: number) => (
-                  <select className={cn("conf-step__chair", place[index])} onChange={onChange}>
-                    <option className="conf-step__chair__option" value="standart">standart</option>
-                    <option className="conf-step__chair__option" value="vip">vip</option>
-                    <option className="conf-step__chair__option" value="disabled">disabled</option>
+                  <select
+                    className={cn("conf-step__chair", place[index])}
+                    onChange={onChange}
+                  >
+                    <option
+                      className="conf-step__chair__option"
+                      value="standart"
+                    >
+                      standart
+                    </option>
+                    <option className="conf-step__chair__option" value="vip">
+                      vip
+                    </option>
+                    <option
+                      className="conf-step__chair__option"
+                      value="disabled"
+                    >
+                      disabled
+                    </option>
                   </select>
                 ))}
               </div>

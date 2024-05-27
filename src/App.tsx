@@ -10,7 +10,7 @@ import { TicketPage } from "./pages/TicketPage";
 import { HallPage } from "./pages/HallPage";
 
 export interface IMovie {
-  id: number;
+  id: string;
   title: string;
   synopsis: string;
   img: string;
@@ -22,10 +22,10 @@ export interface IMovie {
 
 export default function App() {
   const [movies, setMovies] = useState<IMovie[]>([]);
-  
+
   const url = "http://localhost:7070/movies";
 
-  const getAllMovies = async () => {   
+  const getAllMovies = async () => {
     const response = await fetch(url, {
       method: "GET",
     });
@@ -33,36 +33,109 @@ export default function App() {
     setMovies(result);
   };
 
-  const loadData = () => {   
+  const loadData = () => {
     getAllMovies();
   };
 
   useEffect(loadData, []);
 
-  let dateArr: string[] = getDate(); 
+  let dateArr: string[] = getDate();
 
-  let firstPageList = movies.filter((movie: IMovie) => movie.date === dateArr[0]);
-  let secondPageList = movies.filter((movie: IMovie) => movie.date === dateArr[1]);
-  let thirdPageList = movies.filter((movie: IMovie) => movie.date === dateArr[2]);
-  let fourthPageList = movies.filter((movie: IMovie) => movie.date === dateArr[3]);
-  let fifthPageList = movies.filter((movie: IMovie) => movie.date === dateArr[4]);
-  let sixthPageList = movies.filter((movie: IMovie) => movie.date === dateArr[5]);
-  let seventhPageList = movies.filter((movie: IMovie) => movie.date === dateArr[6]);
+  let firstPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[0]
+  );
+  let secondPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[1]
+  );
+  let thirdPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[2]
+  );
+  let fourthPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[3]
+  );
+  let fifthPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[4]
+  );
+  let sixthPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[5]
+  );
+  let seventhPageList = movies.filter(
+    (movie: IMovie) => movie.date === dateArr[6]
+  );
 
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin" element={<AdminPage movies={movies}/>} />
+        <Route
+          path="/admin"
+          element={<AdminPage movies={movies} getAllMovies={getAllMovies} />}
+        />
         <Route path="/hall" element={<HallPage />} />
         <Route path="/ticket" element={<TicketPage />} />
-        <Route path="/" element={<><Menu /><MovieList movies={firstPageList} /></>} />
-        <Route path="/tomorrow" element={<><Menu /><MovieList movies={secondPageList} /></>} />
-        <Route path="/3" element={<><Menu /><MovieList movies={thirdPageList} /></>} />
-        <Route path="/4" element={<><Menu /><MovieList movies={fourthPageList} /></>} />
-        <Route path="/5" element={<><Menu /><MovieList movies={fifthPageList} /></>} />
-        <Route path="/6" element={<><Menu /><MovieList movies={sixthPageList} /></>} />
-        <Route path="/7" element={<><Menu /><MovieList movies={seventhPageList} /></>} />          
+        <Route
+          path="/"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={firstPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/tomorrow"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={secondPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/3"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={thirdPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/4"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={fourthPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/5"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={fifthPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/6"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={sixthPageList} />
+            </>
+          }
+        />
+        <Route
+          path="/7"
+          element={
+            <>
+              <Menu />
+              <MovieList movies={seventhPageList} />
+            </>
+          }
+        />
       </Routes>
     </Router>
   );

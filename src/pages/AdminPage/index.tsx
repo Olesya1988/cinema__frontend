@@ -6,6 +6,10 @@ import { PriceConfiguration } from "../../components/PriceConfiguration";
 import "./styles.css";
 import { SessionGrid } from "../../components/SessionGrid";
 
+type GenerateId = () => string;
+export const generateId: GenerateId = () =>
+  Math.random().toString(16).slice(2) + new Date().getTime().toString(36);
+
 interface IHall {
   id: number;
   rows: number;
@@ -15,7 +19,7 @@ interface IHall {
 }
 
 export interface IMovie {
-  id: number;
+  id: string;
   title: string;
   synopsis: string;
   img: string;
@@ -27,28 +31,110 @@ export interface IMovie {
 
 interface IMovies {
   movies: IMovie[];
+  getAllMovies: any;
 }
 
-export const AdminPage = ({ movies }: IMovies) => {
+export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
   const [halls, setHalls] = useState<IHall[]>([
     {
       id: 1,
       rows: 10,
       seats: 8,
       places: [
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],
-        ["disabled", "disabled", "disabled", "standart", "standart", "disabled", "disabled", "disabled"],        
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
+        [
+          "disabled",
+          "disabled",
+          "disabled",
+          "standart",
+          "standart",
+          "disabled",
+          "disabled",
+          "disabled",
+        ],
       ],
       prices: { standart: 200, vip: 350 },
     },
-  ]);   
+  ]);
 
   const url = "http://localhost:7070/halls";
 
@@ -57,7 +143,7 @@ export const AdminPage = ({ movies }: IMovies) => {
       method: "GET",
     });
     const result = await response.json();
-    console.log(result);
+    
     setHalls(result);
   };
 
@@ -67,14 +153,14 @@ export const AdminPage = ({ movies }: IMovies) => {
 
   useEffect(loadData, []);
 
-  const createHall = async () => {    
+  const createHall = async () => {
     await fetch(url, {
-      method: "POST",      
+      method: "POST",
     });
 
     getHalls();
   };
- 
+
   const deleteHall = async (id: number) => {
     await fetch(`${url}/${id}`, {
       method: "DELETE",
@@ -84,13 +170,11 @@ export const AdminPage = ({ movies }: IMovies) => {
 
   const onDeleteHallHandler = (e: any) => {
     e.preventDefault();
-    const target = e.target;
-    console.log(target.closest(".hall-view").id);
+    const target = e.target;    
     deleteHall(target.closest(".hall-view").id);
   };
 
-  const [activeHall, setActiveHall] = useState(0);
-  const [currentPlaces, setCurrentPlaces] = useState([]);
+  const [activeHall, setActiveHall] = useState(0);  
 
   let places = halls[activeHall].places;
 
@@ -113,7 +197,7 @@ export const AdminPage = ({ movies }: IMovies) => {
     });
     getHalls();
   };
-  const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {   
+  const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormEdit((prev) => ({ ...prev, [name]: value }));
   };
@@ -151,14 +235,15 @@ export const AdminPage = ({ movies }: IMovies) => {
     setActiveHall(id - 1);
   };
 
-  const onChange = (e: any)  => {
+  const onChange = (e: any) => {
     e.preventDefault();
     const target = e.target;
     target.classList.remove(target.classList.item(1));
     target.classList.add(target.value);
-  }
+  };
 
-  const [form, setForm] = useState({        
+  const [form, setForm] = useState({
+    id: "",
     title: "",
     synopsis: "",
     img: "",
@@ -171,51 +256,136 @@ export const AdminPage = ({ movies }: IMovies) => {
 
   const url3 = "http://localhost:7070/movies";
 
-  const createMovie = async (title: string, synopsis: string, img: string, duration: string, origin: string, date: string, hall: string, time: string) => {    
+  const createMovie = async (
+    title: string,
+    synopsis: string,
+    img: string,
+    duration: string,
+    origin: string,
+    date: string,
+    hall: string,
+    time: string
+  ) => {
     const movie = {
-        title,
-        synopsis,
-        img,
-        duration,
-        origin,
-        date,
-        seances: [{
-            hall,
-            time,
-        }]
+      id: generateId(),
+      title,
+      synopsis,
+      img,
+      duration,
+      origin,
+      date,
+      seances: [
+        {
+          hall,
+          time,
+        },
+      ],
     };
     await fetch(url3, {
       method: "POST",
       body: JSON.stringify(movie),
     });
-    
+    getAllMovies();
   };
 
-  const onAddMovieHandler = (e: React.ChangeEvent<HTMLInputElement>) => {    
+  const onAddMovieHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmitMovieHandler = (e: React.FormEvent<HTMLFormElement>) => {    
+  const onSubmitMovieHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createMovie(form.title, form.synopsis, form.img, form.duration, form.origin, form.date, form.hall, form.time);
-        setForm({  title: "",
-        synopsis: "",
-        img: "",
-        duration: "",
-        origin: "",
-        date: "",
-        hall: "",
-        time: "" 
+    createMovie(
+      form.title,
+      form.synopsis,
+      form.img,
+      form.duration,
+      form.origin,
+      form.date,
+      form.hall,
+      form.time
+    );
+    setForm({
+      id: "",
+      title: "",
+      synopsis: "",
+      img: "",
+      duration: "",
+      origin: "",
+      date: "",
+      hall: "",
+      time: "",
     });
   };
 
-  
+  const deleteMovie = async (id: number) => {
+    await fetch(`${url3}/${id}`, {
+      method: "DELETE",
+    });
+    getAllMovies();
+  };
+
+  const onDeleteMovieHandler = (e: any) => {
+    e.preventDefault();
+    const target = e.target;
+    console.log(target.closest(".movie__info").id);
+    deleteMovie(target.closest(".movie__info").id);
+  };
+
+  let activeMovies = movies.filter(
+    (movie: any) => Number(movie.seances[0].hall) === activeHall + 1
+  );
+  console.log(activeMovies);
+
+  const [formEditPrice, setFormEditPrice] = useState({
+    standart: 0,
+    vip: 0,
+  });
+
+  const [activeHallForPrice, setActiveHallForPrice] = useState(0);
+
+  const onClickHandlerForPrice = (e: any) => {
+    e.preventDefault();
+    const target = e.target;
+    getActiveHallForPrice(target.closest("li").id);
+  };
+
+  const getActiveHallForPrice = (id: number) => {
+    setActiveHallForPrice(id - 1);
+  };
+
+  const url4 = "http://localhost:7070/prices";
+
+  const updatePrice = async (id: number, standart: number, vip: number) => {
+    const price = {
+      id,
+      standart,
+      vip,
+    };
+    await fetch(`${url4}/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(price),
+    });
+  };
+  const onUpdatePriceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormEditPrice((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmitPriceHandler = (e: any) => {
+    e.preventDefault();
+    updatePrice(activeHall, formEditPrice.standart, formEditPrice.vip);
+    setFormEditPrice({ standart: 0, vip: 0 });
+  };
+
+  let prices = halls[activeHallForPrice].prices;  
 
   return (
     <div className="login-contaiter">
       <nav className="admin">
-        <NavLink to="/"><button className="admin-enter">Выход</button></NavLink>
+        <NavLink to="/">
+          <button className="admin-enter">Выход</button>
+        </NavLink>
       </nav>
       <header className="page-header">
         <h1 className="page-header__title">
@@ -230,22 +400,32 @@ export const AdminPage = ({ movies }: IMovies) => {
           onDeleteHallHandler={onDeleteHallHandler}
           createHall={createHall}
         />
-        <HallConfiguration halls={halls} onClickHandler={onClickHandler} activeHall={activeHall} onUpdatePlacesHandler={onUpdatePlacesHandler} places={places} onChange={onChange} onSubmitPlacesHandler={onSubmitPlacesHandler}/>
+        <HallConfiguration
+          halls={halls}
+          onClickHandler={onClickHandler}
+          activeHall={activeHall}
+          onUpdatePlacesHandler={onUpdatePlacesHandler}
+          places={places}
+          onChange={onChange}
+          onSubmitPlacesHandler={onSubmitPlacesHandler}
+        />
 
-        <PriceConfiguration halls={halls} />
-        <SessionGrid onAddMovieHandler={onAddMovieHandler} onSubmitMovieHandler={onSubmitMovieHandler} movies={movies}/>
-
-        <section className="conf-step">
-          <header className="conf-step__header conf-step__header_opened">
-            <h2 className="conf-step__title">Открыть продажи</h2>
-          </header>
-          <div className="conf-step__wrapper text-center">
-            <p className="conf-step__paragraph">Всё готово, теперь можно:</p>
-            <button className="conf-step__button conf-step__button-accent">
-              Открыть продажу билетов
-            </button>
-          </div>
-        </section>
+        <PriceConfiguration
+          halls={halls}
+          onClickHandlerForPrice={onClickHandlerForPrice}
+          prices={prices}
+          onUpdatePriceHandler={onUpdatePriceHandler}
+          onSubmitPriceHandler={onSubmitPriceHandler}
+        />
+        <SessionGrid
+          onAddMovieHandler={onAddMovieHandler}
+          onSubmitMovieHandler={onSubmitMovieHandler}
+          onClickHandler={onClickHandler}
+          activeMovies={activeMovies}
+          halls={halls}
+          activeHall={activeHall}
+          onDeleteMovieHandler={onDeleteMovieHandler}
+        />
       </main>
     </div>
   );

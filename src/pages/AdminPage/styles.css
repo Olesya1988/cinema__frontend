@@ -301,7 +301,8 @@ select {
 }
 
 .conf-step__button.conf-step__button-accent,
-.login__button {
+.login__button,
+.movie-add__submit {
   color: #FFFFFF;
   background-color: #16A6AF;
   padding: 12px 32px;
@@ -406,7 +407,8 @@ select {
   outline-offset: -1px;
 }
 
-.conf-step__chair {
+.conf-step__chair,
+.buying-scheme__chair {
   display: inline-block;
   vertical-align: middle;
   width: 26px;
@@ -418,7 +420,8 @@ select {
   font-size: 0;
 }
 
-.conf-step__chair option {
+.conf-step__chair option,
+.buying-scheme__chair option {
   font-size: 12px;
 }
 
@@ -830,18 +833,18 @@ textarea.conf-step__input {
 
 .movie-add__form__wrapper {
   position: fixed;
+  z-index: 22;
+  top: 0;
+  left: 0;
 
-    top: 0;
-    left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 100%;
 
-    width: 100%;
-    height: 100%;
-
-    background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .invisible {
@@ -851,11 +854,32 @@ textarea.conf-step__input {
 .movie-add__form {
   background-color: #ffff;
 
-  width: 390px; 
+  width: 390px;
 
-  padding: 54px 30px; 
-  
+  padding: 54px 30px;
+
   position: absolute;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.movie-add__input {
+  padding: 5px;
+}
+
+.movie-add__input div {
+  font-size: 15px;
+}
+
+.movie-add__input input {
+  width: 100%;
+  padding: 5px;
+}
+
+.movie-add__submit {
+  border: none;
 }
 
 .close {

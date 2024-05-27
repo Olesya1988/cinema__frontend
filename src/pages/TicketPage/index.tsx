@@ -1,28 +1,33 @@
-import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { AdminPage } from "../AdminPage";
-
 
 export const TicketPage = () => {
-
-  const [ticket, seTicket] = useState({
-    title: '',
-    seances: '',
+  const [ticket, setTicket] = useState({
+    id: "",
+    title: "",
+    date: "",
+    time: "",
     hall: 1,
+    places: [],
   });
 
   const url = "http://localhost:7070/ticket";
 
-  const getTicket = async () => {    
+  const getTicket = async () => {
     const response = await fetch(url, {
       method: "GET",
     });
     const result = await response.json();
-    console.log(result);
-    seTicket(result);
+
+    let currentTicketId = window.localStorage.getItem("ticketId");
+
+    let currenTicket = result.filter(
+      (ticket: any) => `"${ticket.id}"` == currentTicketId
+    );
+
+    setTicket(currenTicket[0]);
   };
 
-  const loadData = () => {   
+  const loadData = () => {
     getTicket();
   };
 
@@ -54,14 +59,19 @@ export const TicketPage = () => {
               <span className="ticket__details ticket__chairs">6, 7</span>
             </p>
             <p className="ticket__info">
-              В зале: <span className="ticket__details ticket__hall">{ticket.hall}</span>
+              В зале:{" "}
+              <span className="ticket__details ticket__hall">
+                {ticket.hall}
+              </span>
             </p>
             <p className="ticket__info">
               Начало сеанса:{" "}
-              <span className="ticket__details ticket__start">{ticket.seances}</span>
+              <span className="ticket__details ticket__start">
+                {ticket.time}
+              </span>
             </p>
 
-            <img className="ticket__info-qr" src="./images/qr-code.png" />
+            <img className="ticket__info-qr" />
 
             <p className="ticket__hint">
               Покажите QR-код нашему контроллеру для подтверждения бронирования.

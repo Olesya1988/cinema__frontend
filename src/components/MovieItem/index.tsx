@@ -1,34 +1,47 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
+type GenerateId = () => string;
+export const generateId: GenerateId = () =>
+  Math.random().toString(16).slice(2) + new Date().getTime().toString(36);
 
 export const MovieItem = ({ movie }: any) => {
-  const { id, title, synopsis, duration, origin, seances } = movie;
+  const { id, title, synopsis, duration, origin, date, seances } = movie;
+  console.log(movie);
 
-  const url = "http://localhost:7070/ticket";  
+  const url = "http://localhost:7070/ticket";
 
-  const createTicket: any = async (title: string, seances: string, hall: number) => {    
-    const seance = {
+  const createTicket = async (
+    title: string,
+    date: string,
+    time: string,
+    hall: string
+  ) => {
+    const ticket = {
+      id: generateId(),
       title,
-      seances,
-      hall
+      date,
+      time,
+      hall,
+      places: [],
     };
+
+    window.localStorage.setItem("ticketId", JSON.stringify(ticket.id));
 
     await fetch(url, {
       method: "POST",
-      body: JSON.stringify(seance),
-    });    
+      body: JSON.stringify(ticket),
+    });
   };
 
-  
-  const onCheckTicket = (e: any) => {   
-    
+  const onCheckTicket = (e: any) => {
     const target = e.target;
-    console.log(target);
-    let title = target.closest(".movie").querySelector(".movie__title").innerHTML;
-    let seances = target.innerHTML;
-    let hall =  Number(target.closest(".movie-seances__hall").querySelector(".movie-seances__hall-title").id);
-    console.log(target.closest(".movie-seances__hall").querySelector(".movie-seances__hall-title").id);
-    createTicket(title, seances, hall);
+    let title = target
+      .closest(".movie")
+      .querySelector(".movie__title").innerHTML;
+    let time = target.innerHTML;
+    let hall = target
+      .closest(".movie-seances__hall")
+      .querySelector(".movie-seances__hall-title").id;
+    createTicket(title, date, time, hall);
   };
 
   return (
@@ -52,12 +65,18 @@ export const MovieItem = ({ movie }: any) => {
       </div>
       {seances.map((seance: any) => (
         <div className="movie-seances__hall">
-          <h3 id={seance.hall} className="movie-seances__hall-title">Зал {seance.hall}</h3>
+          <h3 id={seance.hall} className="movie-seances__hall-title">
+            Зал {seance.hall}
+          </h3>
           <ul className="movie-seances__list">
             {seance.time.map((time: any, index: number) => (
               <li className="movie-seances__time-block" key={index}>
                 <NavLink to="/hall">
-                  <a onClick={onCheckTicket} className="movie-seances__time" href="#">
+                  <a
+                    onClick={onCheckTicket}
+                    className="movie-seances__time"
+                    href="#"
+                  >
                     {time}
                   </a>
                 </NavLink>
