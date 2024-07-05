@@ -36,7 +36,6 @@ export const LoginPage = () => {
     e.preventDefault();
     checkLogin(form.email, form.password);
     setForm({ email: "", password: "" });
-    console.log(answer);
   };
 
   return (

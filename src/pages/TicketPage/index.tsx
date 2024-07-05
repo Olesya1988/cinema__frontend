@@ -1,37 +1,29 @@
-import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-export const TicketPage = () => {
-  const [ticket, setTicket] = useState({
-    id: "",
-    title: "",
-    date: "",
-    time: "",
-    hall: 1,
-    places: [],
-  });
+export const TicketPage = (props: any) => {
+  const location = useLocation();
+  const { state } = location;
 
-  const url = "http://localhost:7070/ticket";
+  let places = state.from.newTicket;
+  let seats = [];
 
-  const getTicket = async () => {
-    const response = await fetch(url, {
-      method: "GET",
-    });
-    const result = await response.json();
+  for (let i = 0; i < places.length; i++) {
+    for (let j = 0; j < places[i].length; j++) {
+      if (places[i][j] === "yes") {
+        if (i === 0) {
+          seats.push(j + 1);
+        } else {
+          seats.push(places[i].length * i + j + 1);
+        }
+      }
+    }
+  }
 
-    let currentTicketId = window.localStorage.getItem("ticketId");
+  let seatsToString = seats.join(", ");
 
-    let currenTicket = result.filter(
-      (ticket: any) => `"${ticket.id}"` == currentTicketId
-    );
-
-    setTicket(currenTicket[0]);
-  };
-
-  const loadData = () => {
-    getTicket();
-  };
-
-  useEffect(loadData, []);
+  if (seats.length === 0) {
+    seatsToString = 'Место не выбрано или выбрано уже занятое место';
+  }
 
   return (
     <>
@@ -51,23 +43,31 @@ export const TicketPage = () => {
             <p className="ticket__info">
               На фильм:{" "}
               <span className="ticket__details ticket__title">
-                {ticket.title}
+                {state.from.title}
               </span>
             </p>
             <p className="ticket__info">
-              Места:{" "}
-              <span className="ticket__details ticket__chairs">6, 7</span>
-            </p>
-            <p className="ticket__info">
-              В зале:{" "}
-              <span className="ticket__details ticket__hall">
-                {ticket.hall}
+              Дата:{" "}
+              <span className="ticket__details ticket__start">
+                {state.from.date}
               </span>
             </p>
             <p className="ticket__info">
               Начало сеанса:{" "}
               <span className="ticket__details ticket__start">
-                {ticket.time}
+                {state.from.time}
+              </span>
+            </p>
+            <p className="ticket__info">
+              В зале:{" "}
+              <span className="ticket__details ticket__hall">
+                {state.from.hall}
+              </span>
+            </p>
+            <p className="ticket__info">
+              Места:{" "}
+              <span className="ticket__details ticket__chairs">
+                {seatsToString}
               </span>
             </p>
 

@@ -22,6 +22,7 @@ export const PriceConfiguration = ({
   onSubmitPriceHandler,
 }: PriceConfiguration) => {
   return (
+    
     <section className="conf-step">
       <header className="conf-step__header conf-step__header_opened">
         <h2 className="conf-step__title">Конфигурация цен</h2>
@@ -51,9 +52,9 @@ export const PriceConfiguration = ({
             <input
               type="text"
               name="standart"
-              className="conf-step__input"
-              placeholder={prices.standart}
+              className="conf-step__input"              
               onChange={onUpdatePriceHandler}
+              value={prices.standart}
             />
           </label>
           за <span className="conf-step__chair standart"></span> обычные кресла
@@ -64,9 +65,9 @@ export const PriceConfiguration = ({
             <input
               type="text"
               name="vip"
-              className="conf-step__input"
-              placeholder={prices.vip}
+              className="conf-step__input"              
               onChange={onUpdatePriceHandler}
+              value={prices.vip}
             />
           </label>
           за <span className="conf-step__chair vip"></span> VIP кресла

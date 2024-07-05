@@ -5,8 +5,7 @@ interface ISessionGrid {
   onSubmitMovieHandler: any;
   onClickHandler: any;
   activeMovies: any;
-  halls: IHall[];
-  activeHall: number;
+  halls: IHall[];  
   onDeleteMovieHandler: any;
 }
 
@@ -23,8 +22,7 @@ export const SessionGrid = ({
   onSubmitMovieHandler,
   onClickHandler,
   activeMovies,
-  halls,
-  activeHall,
+  halls,  
   onDeleteMovieHandler,
 }: ISessionGrid) => {
   const onToggleHandler = () => {
@@ -52,31 +50,32 @@ export const SessionGrid = ({
               X
             </div>
             <div className="movie-add__input">
-              <div>Введите название фильма</div>
+              <div>Введите:</div>
+              <div>Название фильма</div>
               <input type="text" name="title" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <div>Введите описание фильма</div>
+              <div>Описание фильма</div>
               <input type="text" name="synopsis" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <div>Введите продолжительность фильма</div>
+              <div>Продолжительность фильма</div>
               <input type="text" name="duration" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <div>Введите название страны, выпустившей фильм</div>
+              <div>Название страны, выпустившей фильм</div>
               <input type="text" name="origin" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input" onChange={onAddMovieHandler}>
-              <div>Введите дату</div>
+              <div>Дату в формате 1.01 (без нуля в числе)</div>
               <input type="text" name="date" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <div>Введите номер зала</div>
+              <div>Номер зала</div>
               <input type="text" name="hall" onChange={onAddMovieHandler} />
             </div>
             <div className="movie-add__input">
-              <div>Введите время начала сеанса</div>
+              <div>Время начала сеанса</div>
               <input type="text" name="time" onChange={onAddMovieHandler} />
             </div>
             <button className="movie-add__submit" onClick={onToggleHandler}>

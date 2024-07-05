@@ -41,97 +41,17 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
       rows: 10,
       seats: 8,
       places: [
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-        [
-          "disabled",
-          "disabled",
-          "disabled",
-          "standart",
-          "standart",
-          "disabled",
-          "disabled",
-          "disabled",
-        ],
-      ],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+        ["standart", "standart", "standart", "standart", "standart", "standart", "standart", "standart"],
+      ], 
       prices: { standart: 200, vip: 350 },
     },
   ]);
@@ -143,7 +63,7 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
       method: "GET",
     });
     const result = await response.json();
-    
+
     setHalls(result);
   };
 
@@ -170,13 +90,13 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
 
   const onDeleteHallHandler = (e: any) => {
     e.preventDefault();
-    const target = e.target;    
+    const target = e.target;
     deleteHall(target.closest(".hall-view").id);
   };
 
-  const [activeHall, setActiveHall] = useState(0);  
+  const [activeHall, setActiveHall] = useState(0);
 
-  let places = halls[activeHall].places;
+  let places = halls[activeHall].places;  
 
   const [formEdit, setFormEdit] = useState({
     rows: 0,
@@ -185,11 +105,12 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
 
   const url2 = "http://localhost:7070/places";
 
-  const updatePlaces = async (id: number, rows: number, seats: number) => {
+  const updatePlaces = async (id: number, rows: number, seats: number, updatedPlaces: []) => {
     const places = {
       id,
       rows,
       seats,
+      updatedPlaces,
     };
     await fetch(`${url2}/${id}`, {
       method: "PUT",
@@ -197,6 +118,7 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
     });
     getHalls();
   };
+
   const onUpdatePlacesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormEdit((prev) => ({ ...prev, [name]: value }));
@@ -204,30 +126,31 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
 
   const onSubmitPlacesHandler = (e: any) => {
     e.preventDefault();
-    updatePlaces(activeHall, formEdit.rows, formEdit.seats);
-    setFormEdit({ rows: 0, seats: 0 });
+
     let arr: any = Array.from(document.querySelectorAll(".conf-step__row"));
-    console.log(arr);
     let newArr: any = [];
+
     for (let i = 0; i < arr.length; i++) {
-      newArr.push(...[arr[i].querySelectorAll(".conf-step__chair")]);
+      newArr.push(
+        ...[Array.from(arr[i].querySelectorAll(".conf-step__chair"))]
+      );
     }
-    console.log(newArr);
 
     for (let i = 0; i < newArr.length; i++) {
       for (let j = 0; j < newArr[i].length; j++) {
-        console.log(newArr[i][j].classList[1]);
-        // newArr[i][j] = newArr[i][j].classList[1];
+        newArr[i][j] = newArr[i][j].classList[1];
       }
     }
-
-    console.log(newArr);
+    updatePlaces(activeHall, formEdit.rows, formEdit.seats, newArr);
+    setFormEdit({ rows: 0, seats: 0 });
   };
 
   const onClickHandler = (e: any) => {
     e.preventDefault();
     const target = e.target;
-
+    let arr: any[] = Array.from(target.closest("ul").querySelectorAll('li'));
+    arr.forEach(el => el.classList.remove('conf-step__radio__checked'));
+    target.closest("li").classList.add('conf-step__radio__checked');
     getActiveHall(target.closest("li").id);
   };
 
@@ -328,14 +251,12 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
   const onDeleteMovieHandler = (e: any) => {
     e.preventDefault();
     const target = e.target;
-    console.log(target.closest(".movie__info").id);
     deleteMovie(target.closest(".movie__info").id);
   };
 
   let activeMovies = movies.filter(
     (movie: any) => Number(movie.seances[0].hall) === activeHall + 1
-  );
-  console.log(activeMovies);
+  );  
 
   const [formEditPrice, setFormEditPrice] = useState({
     standart: 0,
@@ -347,6 +268,9 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
   const onClickHandlerForPrice = (e: any) => {
     e.preventDefault();
     const target = e.target;
+    let arr: any[] = Array.from(target.closest("ul").querySelectorAll('li'));    
+    arr.forEach(el => el.classList.remove('conf-step__radio__checked'));    
+    target.closest("li").classList.add('conf-step__radio__checked');
     getActiveHallForPrice(target.closest("li").id);
   };
 
@@ -366,10 +290,12 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
       method: "PUT",
       body: JSON.stringify(price),
     });
+    getHalls();
   };
+
   const onUpdatePriceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormEditPrice((prev) => ({ ...prev, [name]: value }));
+    const { name, value } = e.target;    
+    setFormEditPrice((prev) => ({ ...prev, [name]: value }));    
   };
 
   const onSubmitPriceHandler = (e: any) => {
@@ -378,7 +304,7 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
     setFormEditPrice({ standart: 0, vip: 0 });
   };
 
-  let prices = halls[activeHallForPrice].prices;  
+  let prices = halls[activeHallForPrice].prices;
 
   return (
     <div className="login-contaiter">
@@ -402,10 +328,8 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
         />
         <HallConfiguration
           halls={halls}
-          onClickHandler={onClickHandler}
-          activeHall={activeHall}
-          onUpdatePlacesHandler={onUpdatePlacesHandler}
-          places={places}
+          onClickHandler={onClickHandler}          
+          places={places}          
           onChange={onChange}
           onSubmitPlacesHandler={onSubmitPlacesHandler}
         />
@@ -422,8 +346,7 @@ export const AdminPage = ({ movies, getAllMovies }: IMovies) => {
           onSubmitMovieHandler={onSubmitMovieHandler}
           onClickHandler={onClickHandler}
           activeMovies={activeMovies}
-          halls={halls}
-          activeHall={activeHall}
+          halls={halls}          
           onDeleteMovieHandler={onDeleteMovieHandler}
         />
       </main>

@@ -1,37 +1,8 @@
 import { NavLink } from "react-router-dom";
-type GenerateId = () => string;
-export const generateId: GenerateId = () =>
-  Math.random().toString(16).slice(2) + new Date().getTime().toString(36);
 
 export const MovieItem = ({ movie }: any) => {
   const { id, title, synopsis, duration, origin, date, seances } = movie;
-  console.log(movie);
-
-  const url = "http://localhost:7070/ticket";
-
-  const createTicket = async (
-    title: string,
-    date: string,
-    time: string,
-    hall: string
-  ) => {
-    const ticket = {
-      id: generateId(),
-      title,
-      date,
-      time,
-      hall,
-      places: [],
-    };
-
-    window.localStorage.setItem("ticketId", JSON.stringify(ticket.id));
-
-    await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(ticket),
-    });
-  };
-
+  
   const onCheckTicket = (e: any) => {
     const target = e.target;
     let title = target
@@ -40,8 +11,8 @@ export const MovieItem = ({ movie }: any) => {
     let time = target.innerHTML;
     let hall = target
       .closest(".movie-seances__hall")
-      .querySelector(".movie-seances__hall-title").id;
-    createTicket(title, date, time, hall);
+      .querySelector(".movie-seances__hall-title").id;    
+    return ({title, date, time, hall});
   };
 
   return (
@@ -71,8 +42,8 @@ export const MovieItem = ({ movie }: any) => {
           <ul className="movie-seances__list">
             {seance.time.map((time: any, index: number) => (
               <li className="movie-seances__time-block" key={index}>
-                <NavLink to="/hall">
-                  <a
+                <NavLink to="/hall" state={{from: {hall: seance.hall, title, date, time}}}>
+                  <a                    
                     onClick={onCheckTicket}
                     className="movie-seances__time"
                     href="#"
